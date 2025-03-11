@@ -13,29 +13,45 @@ namespace DSaA_5
             Random rnd = new Random();
             int[] mainArray = new int[100];
             int[] genCounter = new int[100];
-            
-            int avgCount = 0;
-
+            int sumNum = 0;
+            float avgCount = 0;
             for (int i = 0; i < mainArray.Length; i++)
             {
-                int genCount = 0;
-                int tempNum;
+                bool passNum = false;
+                int gCount = 0;
                 if (i == 0)
-                    mainArray[i] = rnd.Next(1,101);
+                {
+                    mainArray[i] = rnd.Next(1, 101);
+                    genCounter[i] = 1;
+                }
                 else
                 {
-                    tempNum = rnd.Next(1, 101);
-                    for (int j = 0; j < i; j++)
+                    while (!passNum)
                     {
-                        
-                        genCount++;
-                        if (tempNum == mainArray[j])
+                        int tempNum = rnd.Next(1, 101);
+                        gCount++;
+
+                        for (int j = 0; j < i; j++)
                         {
-                            break;
+                            if (tempNum == mainArray[j])
+                                break;
+                            if (j+1==i)
+                            {
+                                mainArray[i] = tempNum;
+                                genCounter[i] = gCount;
+                                passNum = true;
+                            }
                         }
                     }
                 }
+                if (i % 10 == 0)
+                    Console.WriteLine();
+                Console.Write($"[{mainArray[i]}]\t");
             }
+            foreach (int i in genCounter)
+                sumNum = sumNum+i;
+            avgCount = (float)sumNum / 100;
+            Console.WriteLine($"\nThe Avarage Generation is [{avgCount}]");
         }
     }
 }
